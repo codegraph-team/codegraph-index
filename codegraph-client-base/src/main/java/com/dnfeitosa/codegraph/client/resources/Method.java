@@ -28,4 +28,8 @@ public class Method {
     public List<Type> getReturnTypes() {
         return returnTypes;
     }
+
+    public String getName() {
+        return name;
+    }
 }
