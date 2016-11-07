@@ -1,0 +1,7 @@
+dependencies {
+    compile project(':codegraph-client-base')
+
+    compile group: 'com.github.javaparser', name: 'javaparser-core', version: '2.5.1'
+
+    testCompile libraries.unitTesting
+}
