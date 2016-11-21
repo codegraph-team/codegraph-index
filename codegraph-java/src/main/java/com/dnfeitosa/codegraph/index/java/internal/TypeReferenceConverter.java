@@ -18,12 +18,7 @@ public class TypeReferenceConverter {
 
         if (t instanceof ReferenceType) {
             ReferenceType referenceType = (ReferenceType) t;
-            ClassOrInterfaceType coit = (ClassOrInterfaceType) referenceType.getType();
-
-            Type type = new Type();
-            type.setName(getName(coit));
-            type.setPackageName(packageResolver.resolve(t, coit.getName()));
-            return type;
+            return toType(t, packageResolver, (ClassOrInterfaceType) referenceType.getType());
         }
 
         if (t instanceof PrimitiveType) {
@@ -32,10 +27,17 @@ public class TypeReferenceConverter {
             return type;
         }
 
+        if (t instanceof ClassOrInterfaceType) {
+            return toType(t, packageResolver, (ClassOrInterfaceType) t);
+        }
+
         throw new UnknownTypeException("Don't know how to handle " + t.getClass());
     }
 
-    private String getName(ClassOrInterfaceType coit) {
-        return coit.getName();
+    private Type toType(com.github.javaparser.ast.type.Type t, PackageResolver packageResolver, ClassOrInterfaceType coit) {
+        Type type = new Type();
+        type.setName(coit.getName());
+        type.setPackageName(packageResolver.resolve(t, coit.getName()));
+        return type;
     }
 }

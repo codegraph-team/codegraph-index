@@ -17,6 +17,7 @@ import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.type.ClassOrInterfaceType;
 
 import java.io.File;
 import java.util.List;
@@ -46,7 +47,30 @@ public class TypesExtractor {
         addBasicData(type, compilationUnit, typeDeclaration);
         addMethods(type, typeDeclaration, packageResolver);
         addFields(type, typeDeclaration, packageResolver);
+        addSuperclass(type, typeDeclaration, packageResolver);
+        addInterfaces(type, typeDeclaration, packageResolver);
         return type;
+    }
+
+    private void addInterfaces(Type type, TypeDeclaration typeDeclaration, PackageResolver packageResolver) {
+        ClassOrInterfaceDeclaration coid = (ClassOrInterfaceDeclaration) typeDeclaration;
+        getInterfacesFrom(coid).forEach(i -> type.addInterface(toTypeReference(i, packageResolver)));
+    }
+
+    private List<ClassOrInterfaceType> getInterfacesFrom(ClassOrInterfaceDeclaration coid) {
+        return coid.isInterface()
+                ? coid.getExtends()
+                : coid.getImplements();
+    }
+
+    private void addSuperclass(Type type, TypeDeclaration typeDeclaration, PackageResolver packageResolver) {
+        ClassOrInterfaceDeclaration coid = (ClassOrInterfaceDeclaration) typeDeclaration;
+        if (coid.getExtends().isEmpty() || coid.isInterface()) {
+            return;
+        }
+
+        ClassOrInterfaceType classOrInterfaceType = coid.getExtends().get(0);
+        type.setSuperclass(toTypeReference(classOrInterfaceType, packageResolver));
     }
 
     private void addFields(Type type, TypeDeclaration typeDeclaration, PackageResolver packageResolver) {
@@ -114,6 +138,7 @@ public class TypesExtractor {
         try {
              return JavaParser.parse(file);
         } catch (Exception e) {
+            System.out.println(e);
             throw new ParseException();
         }
     }

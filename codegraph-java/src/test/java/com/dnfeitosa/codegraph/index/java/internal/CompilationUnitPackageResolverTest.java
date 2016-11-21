@@ -41,4 +41,16 @@ public class CompilationUnitPackageResolverTest {
 
         verify(basePackageResolver).resolve(null, "TypeNotPresentInCompilationUnit");
     }
+
+    @Test
+    public void shouldReturnTheCompilationUnitsPackageWhenAPackageCannotBeResolved() throws Exception {
+        CompilationUnit compilationUnit = JavaParser.parse(getClass().getResourceAsStream("/sources/ArtifactController.java"));
+        PackageResolver basePackageResolver = mock(PackageResolver.class);
+
+        CompilationUnitPackageResolver resolver = new CompilationUnitPackageResolver(compilationUnit, basePackageResolver);
+
+        String packageName = resolver.resolve(null, "TypeInSamePackageAsCompilationUnit");
+
+        assertThat(packageName, is("com.dnfeitosa.codegraph.server.api.controllers"));
+    }
 }

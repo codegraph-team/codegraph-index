@@ -15,6 +15,8 @@ public class Type {
     private String usage;
     private List<Field> fields = new ArrayList<Field>();
     private List<Method> methods = new ArrayList<Method>();
+    private Type superclass;
+    private List<Type> interfaces = new ArrayList<Type>();
 
     public String getName() {
         return name;
@@ -52,16 +54,31 @@ public class Type {
         methods.add(method);
     }
 
-    public void addField(Field field) {
-        fields.add(field);
-    }
-
     public List<Method> getMethods() {
         return methods;
     }
 
+    public void addField(Field field) {
+        fields.add(field);
+    }
 
     public List<Field> getFields() {
         return fields;
+    }
+
+    public Type getSuperclass() {
+        return superclass;
+    }
+
+    public void setSuperclass(Type superclass) {
+        this.superclass = superclass;
+    }
+
+    public List<Type> getInterfaces() {
+        return interfaces;
+    }
+
+    public void addInterface(Type interface_) {
+        interfaces.add(interface_);
     }
 }

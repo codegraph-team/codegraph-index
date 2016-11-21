@@ -4,7 +4,10 @@ import com.dnfeitosa.codegraph.client.resources.Field;
 import com.dnfeitosa.codegraph.client.resources.Method;
 import com.dnfeitosa.codegraph.client.resources.Parameter;
 import com.dnfeitosa.codegraph.client.resources.Type;
+import com.dnfeitosa.codegraph.index.java.internal.CompositePackageResolver;
+import com.dnfeitosa.codegraph.index.java.internal.DefaultPackageResolver;
 import com.dnfeitosa.codegraph.index.java.internal.JavaLangPackageResolver;
+import com.dnfeitosa.codegraph.index.java.internal.PackageResolver;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,6 +17,7 @@ import java.util.List;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -91,5 +95,42 @@ public class TypesExtractorTest {
             assertThat(field.getName(), is("artifactService"));
             assertThat(field.getType().getName(), is("ArtifactService"));
         }
+    }
+
+    @Test
+    public void shouldExtractATypeWithASuperclassAndInterfaces() {
+        File sourceFile = new File(getClass().getResource("/sources/TypeRepository.java").getFile());
+
+        PackageResolver packageResolver = new CompositePackageResolver(new DefaultPackageResolver(), new JavaLangPackageResolver());
+        List<Type> types = typesExtractor.parseTypes(sourceFile, packageResolver);
+
+        Type type = types.get(0);
+
+        assertThat(type.getName(), is("TypeRepository"));
+        assertThat(type.getSuperclass().getName(), is("BaseRepository"));
+        assertThat(type.getSuperclass().getPackageName(), is("com.dnfeitosa.codegraph.db.repositories"));
+
+        assertThat(type.getInterfaces().size(), is(1));
+        assertThat(type.getInterfaces().get(0).getName(), is("GraphRepository"));
+        assertThat(type.getInterfaces().get(0).getPackageName(), is("org.springframework.data.neo4j.repository"));
+    }
+
+    @Test
+    public void shouldExtractAnInterfaceInterfaces() {
+        File sourceFile = new File(getClass().getResource("/sources/RepositoryIterator.java").getFile());
+
+        PackageResolver packageResolver = new CompositePackageResolver(new DefaultPackageResolver(), new JavaLangPackageResolver());
+        List<Type> types = typesExtractor.parseTypes(sourceFile, packageResolver);
+
+        Type type = types.get(0);
+
+        assertThat(type.getName(), is("RepositoryIterator"));
+        assertNull(type.getSuperclass());
+
+        List<Type> interfaces = type.getInterfaces();
+        assertThat(interfaces.size(), is(2));
+
+        assertThat(interfaces.get(0).getName(), is("GraphRepository"));
+        assertThat(interfaces.get(1).getName(), is("Iterator"));
     }
 }

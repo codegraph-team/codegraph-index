@@ -14,9 +14,11 @@ import java.util.Map;
 public class CompilationUnitPackageResolver implements PackageResolver {
 
     private final Map<String, String> packages = new HashMap<>();
+    private CompilationUnit compilationUnit;
     private final PackageResolver basePackageResolver;
 
     public CompilationUnitPackageResolver(CompilationUnit compilationUnit, PackageResolver basePackageResolver) {
+        this.compilationUnit = compilationUnit;
         this.basePackageResolver = basePackageResolver;
         addPackagesFrom(compilationUnit);
     }
@@ -31,7 +33,11 @@ public class CompilationUnitPackageResolver implements PackageResolver {
         if (packageName != null) {
             return packageName;
         }
-        return basePackageResolver.resolve(t, typeName);
+        String resolve = basePackageResolver.resolve(t, typeName);
+        if (resolve != null) {
+            return resolve;
+        }
+        return compilationUnit.getPackage().getPackageName();
     }
 
     public Map<String, String> getResolvedPackages() {
@@ -40,9 +46,9 @@ public class CompilationUnitPackageResolver implements PackageResolver {
 
     private void addPackagesFrom(CompilationUnit compilationUnit) {
         List<ImportDeclaration> imports = extractImportsFrom(compilationUnit);
-        imports.stream().map(i -> (QualifiedNameExpr)i.getName()).forEach(_import -> {
-            String typeName = _import.getName();
-            add(typeName, getPackageName(_import, typeName));
+        imports.stream().map(i -> (QualifiedNameExpr)i.getName()).forEach(import_ -> {
+            String typeName = import_.getName();
+            add(typeName, getPackageName(import_, typeName));
         });
     }
 
