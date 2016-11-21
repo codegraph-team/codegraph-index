@@ -18,17 +18,17 @@ public class TypeReferenceConverter {
 
         if (t instanceof ReferenceType) {
             ReferenceType referenceType = (ReferenceType) t;
-            return toType(t, packageResolver, (ClassOrInterfaceType) referenceType.getType());
+            return convert(referenceType.getType(), packageResolver);
+        }
+
+        if (t instanceof ClassOrInterfaceType) {
+            return toType(t, packageResolver, (ClassOrInterfaceType) t);
         }
 
         if (t instanceof PrimitiveType) {
             Type type = new Type();
             type.setName(((PrimitiveType) t).getType().name().toLowerCase());
             return type;
-        }
-
-        if (t instanceof ClassOrInterfaceType) {
-            return toType(t, packageResolver, (ClassOrInterfaceType) t);
         }
 
         throw new UnknownTypeException("Don't know how to handle " + t.getClass());
