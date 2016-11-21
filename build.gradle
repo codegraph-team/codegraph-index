@@ -17,6 +17,8 @@ apply from: "$rootDir/gradle/distribution.gradle"
 subprojects {
     apply from: "$rootDir/gradle/repositories.gradle"
     apply from: "$rootDir/gradle/dependencies.gradle"
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
     apply plugin: 'idea'
     apply plugin: 'java'
 
