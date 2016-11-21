@@ -133,4 +133,24 @@ public class TypesExtractorTest {
         assertThat(interfaces.get(0).getName(), is("GraphRepository"));
         assertThat(interfaces.get(1).getName(), is("Iterator"));
     }
+
+    @Test
+    public void shouldExtractAnEnum() throws Exception {
+        File sourceFile = new File(getClass().getResource("/sources/SomeEnum.java").getFile());
+
+        PackageResolver packageResolver = new CompositePackageResolver(new DefaultPackageResolver(), new JavaLangPackageResolver());
+        List<Type> types = typesExtractor.parseTypes(sourceFile, packageResolver);
+
+        Type type = types.get(0);
+
+        assertThat(type.getName(), is("SomeEnum"));
+        assertThat(type.getPackageName(), is("com.dnfeitosa.codegraph"));
+        assertNull(type.getSuperclass());
+
+//        assertThat(type.getFields().size(), is(2));
+//        assertThat(type.getFields().get(0).getName(), is("VALUE1"));
+//        assertThat(type.getFields().get(0).getType().getName(), is("com.dnfeitosa.codegraph"));
+//        assertThat(type.getFields().get(0).getType().getPackageName(), is("VALUE1"));
+//        assertThat(type.getFields().get(1).getType().getPackageName(), is("com.dnfeitosa.codegraph"));
+    }
 }

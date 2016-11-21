@@ -13,6 +13,7 @@ import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
+import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
@@ -53,6 +54,9 @@ public class TypesExtractor {
     }
 
     private void addInterfaces(Type type, TypeDeclaration typeDeclaration, PackageResolver packageResolver) {
+        if (!(typeDeclaration instanceof ClassOrInterfaceDeclaration)) {
+            return;
+        }
         ClassOrInterfaceDeclaration coid = (ClassOrInterfaceDeclaration) typeDeclaration;
         getInterfacesFrom(coid).forEach(i -> type.addInterface(toTypeReference(i, packageResolver)));
     }
@@ -64,6 +68,9 @@ public class TypesExtractor {
     }
 
     private void addSuperclass(Type type, TypeDeclaration typeDeclaration, PackageResolver packageResolver) {
+        if (!(typeDeclaration instanceof ClassOrInterfaceDeclaration)) {
+            return;
+        }
         ClassOrInterfaceDeclaration coid = (ClassOrInterfaceDeclaration) typeDeclaration;
         if (coid.getExtends().isEmpty() || coid.isInterface()) {
             return;
@@ -130,6 +137,9 @@ public class TypesExtractor {
     }
 
     private String getTypeType(TypeDeclaration typeDeclaration) {
+        if (typeDeclaration instanceof EnumDeclaration) {
+            return "enum";
+        }
         ClassOrInterfaceDeclaration coid = (ClassOrInterfaceDeclaration) typeDeclaration;
         return coid.isInterface() ? "interface" : "class";
     }
