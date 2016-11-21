@@ -15,6 +15,7 @@ dependencies {
     compile localGroovy()
 
     compile project(':codegraph-client-base')
+    compile project(':codegraph-java')
     testCompile libraries.unitTesting
 }
 
