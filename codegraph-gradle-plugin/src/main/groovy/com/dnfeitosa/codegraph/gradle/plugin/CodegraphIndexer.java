@@ -56,6 +56,10 @@ public class CodegraphIndexer {
         PackageResolver packageResolver = new JavaLangPackageResolver();
 
         LOGGER.lifecycle("-----------------");
+        if (!project.getPlugins().hasPlugin("java")) {
+            LOGGER.lifecycle("Java plugin not present. Skipping {}", project);
+            return;
+        }
         JavaPluginConvention pluginConvention = project.getConvention().getPlugin(JavaPluginConvention.class);
         SourceSetContainer sourceSets = pluginConvention.getSourceSets();
         LOGGER.info("Found {} source sets: {}", sourceSets.size(), sourceSets);
@@ -63,6 +67,7 @@ public class CodegraphIndexer {
             LOGGER.info("Collecting types from '{}'", sourceSet.getName());
             FileTree files = sourceSet.getAllJava().getAsFileTree();
             for (File file : files) {
+                LOGGER.lifecycle("Parsing {}", file);
                 List<Type> types = typesExtractor.parseTypes(file, packageResolver);
                 LOGGER.lifecycle("File {} contains {} types", file, types.size());
                 for (Type type : types) {

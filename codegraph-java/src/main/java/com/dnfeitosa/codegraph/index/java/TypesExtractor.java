@@ -11,13 +11,7 @@ import com.dnfeitosa.codegraph.index.java.internal.javaparser.FieldsCollector;
 import com.dnfeitosa.codegraph.index.java.internal.javaparser.MethodsCollector;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.ConstructorDeclaration;
-import com.github.javaparser.ast.body.EnumDeclaration;
-import com.github.javaparser.ast.body.FieldDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.body.Parameter;
-import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 
 import java.io.File;
@@ -139,6 +133,13 @@ public class TypesExtractor {
     private String getTypeType(TypeDeclaration typeDeclaration) {
         if (typeDeclaration instanceof EnumDeclaration) {
             return "enum";
+        }
+        if (typeDeclaration instanceof AnnotationDeclaration) {
+            return "interface";
+        }
+        if (typeDeclaration instanceof EmptyTypeDeclaration) {
+            EmptyTypeDeclaration etd = (EmptyTypeDeclaration) typeDeclaration;
+            return "class";
         }
         ClassOrInterfaceDeclaration coid = (ClassOrInterfaceDeclaration) typeDeclaration;
         return coid.isInterface() ? "interface" : "class";

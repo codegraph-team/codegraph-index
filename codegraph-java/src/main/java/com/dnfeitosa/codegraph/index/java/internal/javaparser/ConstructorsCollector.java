@@ -1,9 +1,6 @@
 package com.dnfeitosa.codegraph.index.java.internal.javaparser;
 
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.ConstructorDeclaration;
-import com.github.javaparser.ast.body.EnumDeclaration;
-import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
 import java.util.ArrayList;
@@ -24,6 +21,12 @@ public class ConstructorsCollector {
         }
         if (typeDeclaration instanceof EnumDeclaration) {
             visitor.visit((EnumDeclaration) typeDeclaration, constructors);
+        }
+        if (typeDeclaration instanceof AnnotationDeclaration) {
+            visitor.visit((AnnotationDeclaration) typeDeclaration, constructors);
+        }
+        if (typeDeclaration instanceof EmptyTypeDeclaration) {
+            visitor.visit((EmptyTypeDeclaration) typeDeclaration, constructors);
         }
         return constructors;
     }

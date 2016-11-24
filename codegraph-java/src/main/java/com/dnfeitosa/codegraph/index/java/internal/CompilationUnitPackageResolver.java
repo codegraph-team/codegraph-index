@@ -46,7 +46,10 @@ public class CompilationUnitPackageResolver implements PackageResolver {
 
     private void addPackagesFrom(CompilationUnit compilationUnit) {
         List<ImportDeclaration> imports = extractImportsFrom(compilationUnit);
-        imports.stream().map(i -> (QualifiedNameExpr)i.getName()).forEach(import_ -> {
+        imports.stream().filter(i -> !i.isEmptyImportDeclaration())
+                .map(i -> (QualifiedNameExpr)i.getName())
+                .forEach(import_ -> {
+
             String typeName = import_.getName();
             add(typeName, getPackageName(import_, typeName));
         });
