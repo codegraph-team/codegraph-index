@@ -11,6 +11,7 @@ import com.dnfeitosa.codegraph.index.java.internal.javaparser.FieldsCollector;
 import com.dnfeitosa.codegraph.index.java.internal.javaparser.MethodsCollector;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.AnnotationDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.EnumDeclaration;
@@ -140,8 +141,14 @@ public class TypesExtractor {
         if (typeDeclaration instanceof EnumDeclaration) {
             return "enum";
         }
-        ClassOrInterfaceDeclaration coid = (ClassOrInterfaceDeclaration) typeDeclaration;
-        return coid.isInterface() ? "interface" : "class";
+        if (typeDeclaration instanceof ClassOrInterfaceDeclaration) {
+            ClassOrInterfaceDeclaration coid = (ClassOrInterfaceDeclaration) typeDeclaration;
+            return coid.isInterface() ? "interface" : "class";
+        }
+        if (typeDeclaration instanceof AnnotationDeclaration) {
+            return "annotation";
+        }
+        throw new IllegalArgumentException("Invalid declaration. How did Java allow this?");
     }
 
     private CompilationUnit getCompilationUnitFrom(File file) {

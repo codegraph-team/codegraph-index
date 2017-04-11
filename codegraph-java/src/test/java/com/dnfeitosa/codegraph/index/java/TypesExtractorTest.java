@@ -145,12 +145,22 @@ public class TypesExtractorTest {
 
         assertThat(type.getName(), is("SomeEnum"));
         assertThat(type.getPackageName(), is("com.dnfeitosa.codegraph"));
+        assertThat(type.getType(), is("enum"));
         assertNull(type.getSuperclass());
+    }
 
-//        assertThat(type.getFields().size(), is(2));
-//        assertThat(type.getFields().get(0).getName(), is("VALUE1"));
-//        assertThat(type.getFields().get(0).getType().getName(), is("com.dnfeitosa.codegraph"));
-//        assertThat(type.getFields().get(0).getType().getPackageName(), is("VALUE1"));
-//        assertThat(type.getFields().get(1).getType().getPackageName(), is("com.dnfeitosa.codegraph"));
+    @Test
+    public void shouldExtractAnAnnotation() throws Exception {
+        File sourceFile = new File(getClass().getResource("/sources/SomeAnnotation.java").getFile());
+
+        PackageResolver packageResolver = new CompositePackageResolver(new DefaultPackageResolver(), new JavaLangPackageResolver());
+        List<Type> types = typesExtractor.parseTypes(sourceFile, packageResolver);
+
+        Type type = types.get(0);
+
+        assertThat(type.getName(), is("SomeAnnotation"));
+        assertThat(type.getPackageName(), is("com.dnfeitosa.codegraph"));
+        assertThat(type.getType(), is("annotation"));
+        assertNull(type.getSuperclass());
     }
 }
