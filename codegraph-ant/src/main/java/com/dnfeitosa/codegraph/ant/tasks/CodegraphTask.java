@@ -49,7 +49,7 @@ public class CodegraphTask extends IvyTask {
         ModuleRevisionConverter converter = new ModuleRevisionConverter();
         Set<ModuleRevisionId> dependencies = getDependencies(resolveId, cache, confs);
         for (ModuleRevisionId dependency : dependencies) {
-            projectArtifact.addDependency(converter.toArtifact(dependency));
+            projectArtifact.addDependency(converter.toDependency(dependency));
         }
 
         client.addArtifact(projectArtifact);

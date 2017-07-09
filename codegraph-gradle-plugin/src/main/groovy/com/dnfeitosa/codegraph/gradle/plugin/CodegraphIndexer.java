@@ -2,6 +2,7 @@ package com.dnfeitosa.codegraph.gradle.plugin;
 
 import com.dnfeitosa.codegraph.client.CodegraphClient;
 import com.dnfeitosa.codegraph.client.resources.Artifact;
+import com.dnfeitosa.codegraph.client.resources.Dependency;
 import com.dnfeitosa.codegraph.client.resources.Type;
 import com.dnfeitosa.codegraph.gradle.plugin.converters.ProjectConverter;
 import com.dnfeitosa.codegraph.gradle.plugin.converters.ResolvedDependencyConverter;
@@ -78,7 +79,7 @@ public class CodegraphIndexer {
     private void addDependencies(Artifact artifact, Project project) {
         Set<ResolvedDependency> resolvedDependencies = resolveDependencies(project);
         for (ResolvedDependency resolvedDependency : resolvedDependencies) {
-            Artifact dependency = dependencyConverter.toArtifact(resolvedDependency);
+            Dependency dependency = dependencyConverter.toDependency(resolvedDependency);
             artifact.addDependency(dependency);
         }
     }

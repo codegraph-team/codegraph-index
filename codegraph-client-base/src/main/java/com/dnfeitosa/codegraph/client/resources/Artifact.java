@@ -10,14 +10,14 @@ public class Artifact {
     private String version;
     private String extension;
     private String type;
-    private List<Artifact> dependencies = new ArrayList<Artifact>();
+    private List<Dependency> dependencies = new ArrayList<Dependency>();
     private List<Type> types = new ArrayList<Type>();
 
     public void addType(Type type) {
         types.add(type);
     }
 
-    public void addDependency(Artifact dependency) {
+    public void addDependency(Dependency dependency) {
         dependencies.add(dependency);
     }
 

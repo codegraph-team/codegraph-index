@@ -9,7 +9,7 @@ class DependenciesResolver {
 
     private static final Logger logger = Logging.getLogger(DependenciesResolver.class);
 
-    public Set<ResolvedDependency> resolveDependencies(Project project) {
+    Set<ResolvedDependency> resolveDependencies(Project project) {
         project.configurations.collect { conf ->
             def dependencies = conf.resolvedConfiguration.firstLevelModuleDependencies
             logger.info("Found {} dependencies for configuration {}.", dependencies.size(), conf.name)

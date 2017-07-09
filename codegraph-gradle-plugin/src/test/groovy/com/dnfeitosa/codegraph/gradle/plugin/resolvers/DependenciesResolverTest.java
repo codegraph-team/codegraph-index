@@ -30,6 +30,7 @@ public class DependenciesResolverTest {
 
         project.getConfigurations().add(compile);
         project.getConfigurations().add(testCompile);
+
         dependenciesResolver.resolveDependencies(project);
     }
 

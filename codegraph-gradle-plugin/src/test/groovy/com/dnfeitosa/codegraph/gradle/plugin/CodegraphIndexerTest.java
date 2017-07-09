@@ -48,8 +48,8 @@ public class CodegraphIndexerTest {
 
         task.index(project);
 
-        verify(dependencyConverter).toArtifact(dependency1);
-        verify(dependencyConverter).toArtifact(dependency2);
+        verify(dependencyConverter).toDependency(dependency1);
+        verify(dependencyConverter).toDependency(dependency2);
         verify(client).addArtifact(projectArtifact);
     }
 

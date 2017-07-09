@@ -5,6 +5,7 @@ import org.gradle.api.internal.artifacts.DefaultResolvedDependency
 import org.junit.Before
 import org.junit.Test
 
+import static org.hamcrest.CoreMatchers.hasItem
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
 
@@ -12,20 +13,21 @@ class ResolvedDependencyConverterTest {
     private ResolvedDependencyConverter converter
 
     @Before
-    def void setUp() {
+    void setUp() {
         converter = new ResolvedDependencyConverter()
     }
 
     @Test
-    def void shouldConvertAProjectToArtifact() {
-        def dependency = new DefaultResolvedDependency(new DefaultModuleVersionIdentifier("organization", "name", "version"), "x")
+    void shouldConvertAResolvedDependencyToDependency() {
+        def resolvedDependency = new DefaultResolvedDependency(new DefaultModuleVersionIdentifier("organization", "name", "version"), "compile")
 
-        def artifact = converter.toArtifact(dependency)
+        def dependency = converter.toDependency(resolvedDependency)
 
-        assertThat(artifact.name, is('name'))
-        assertThat(artifact.organization, is('organization'))
-        assertThat(artifact.version, is('version'))
-        assertThat(artifact.type, is('jar'))
-        assertThat(artifact.extension, is('jar'))
+        assertThat(dependency.name, is('name'))
+        assertThat(dependency.organization, is('organization'))
+        assertThat(dependency.version, is('version'))
+//        assertThat(dependency.type, is('jar'))
+//        assertThat(dependency.extension, is('jar'))
+        assertThat(dependency.configurations, hasItem("compile"))
     }
 }

@@ -1,6 +1,6 @@
 package com.dnfeitosa.codegraph.ant.converters;
 
-import com.dnfeitosa.codegraph.client.resources.Artifact;
+import com.dnfeitosa.codegraph.client.resources.Dependency;
 import org.apache.ivy.core.module.id.ModuleId;
 import org.apache.ivy.core.module.id.ModuleRevisionId;
 import org.junit.Before;
@@ -19,15 +19,13 @@ public class ModuleRevisionConverterTest {
     }
 
     @Test
-    public void shouldConvertAModuleRevisionToArtifact() {
+    public void shouldConvertAModuleRevisionToDependency() {
         ModuleRevisionId module = new ModuleRevisionId(new ModuleId("com.dnfeitosa.codegraph", "codegraph-ant"), "1.0");
 
-        Artifact artifact = converter.toArtifact(module);
+        Dependency artifact = converter.toDependency(module);
 
         assertThat(artifact.getName(), is("codegraph-ant"));
         assertThat(artifact.getOrganization(), is("com.dnfeitosa.codegraph"));
         assertThat(artifact.getVersion(), is("1.0"));
-        assertThat(artifact.getExtension(), is("jar"));
-        assertThat(artifact.getType(), is("jar"));
     }
 }

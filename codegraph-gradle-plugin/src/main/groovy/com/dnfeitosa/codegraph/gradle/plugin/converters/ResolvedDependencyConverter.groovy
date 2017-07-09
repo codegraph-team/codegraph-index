@@ -1,17 +1,17 @@
 package com.dnfeitosa.codegraph.gradle.plugin.converters
 
-import com.dnfeitosa.codegraph.client.resources.Artifact
+import com.dnfeitosa.codegraph.client.resources.Dependency
 import org.gradle.api.artifacts.ResolvedDependency
 
 class ResolvedDependencyConverter {
 
-    def Artifact toArtifact(ResolvedDependency dependency) {
-        def artifact = new Artifact()
-        artifact.name = dependency.moduleName;
-        artifact.organization = dependency.moduleGroup
-        artifact.type = 'jar'
-        artifact.extension = 'jar'
-        artifact.version = dependency.moduleVersion;
-        return artifact
+    Dependency toDependency(ResolvedDependency resolvedDependency) {
+        def configurations = new HashSet()
+        configurations.add(resolvedDependency.configuration)
+
+        def dependency = new Dependency(resolvedDependency.moduleGroup, resolvedDependency.moduleName, resolvedDependency.moduleVersion, configurations)
+//        dependency.type = 'jar'
+//        dependency.extension = 'jar'
+        return dependency
     }
 }
