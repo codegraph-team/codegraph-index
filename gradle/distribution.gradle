@@ -1,40 +1,40 @@
 apply plugin: 'distribution'
 apply plugin: 'maven-publish'
 
-ext { 
+ext {
     distribution = [:]
     distribution.versions = [:]
 }
 
 distribution.versions = [
-    major: '0',
-    modifier: 'dev',
-    'codegraph-client-base': '0.1',
+    major                    : '0',
+    modifier                 : 'dev',
+    'codegraph-client-base'  : '0.1',
     'codegraph-gradle-plugin': '0.1',
-    'codegraph-ant': '0.1',
-    'codegraph-java': '0.1',
+    'codegraph-ant'          : '0.1',
+    'codegraph-java'         : '0.1',
 ]
 
 distributions {
-  main {
-    contents {
-      from { 'distribution-template' }
-      from { groupFiles }
+    main {
+        contents {
+            from { 'distribution-template' }
+            from { groupFiles }
+        }
     }
-  }
 }
 
 
 task groupFiles(type: Copy) {
-  from("$projectDir/build/libs") {
-    include '*.jar'
-  }
-  into("$buildDir/temp-dist")
+    from("$projectDir/build/libs") {
+        include '*.jar'
+    }
+    into("$buildDir/temp-dist")
 }
 
 task distribute(type: Copy) {
-  from distTar
-  from distZip
+    from distTar
+    from distZip
 
-  into "$rootDir/distribution"
+    into "$rootDir/distribution"
 }
