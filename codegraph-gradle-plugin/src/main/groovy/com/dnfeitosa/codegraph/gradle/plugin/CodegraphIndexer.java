@@ -6,12 +6,12 @@ import com.dnfeitosa.codegraph.client.resources.Dependency;
 import com.dnfeitosa.codegraph.client.resources.Type;
 import com.dnfeitosa.codegraph.gradle.plugin.converters.ProjectConverter;
 import com.dnfeitosa.codegraph.gradle.plugin.converters.ResolvedDependencyConverter;
+import com.dnfeitosa.codegraph.gradle.plugin.resolvers.DeclaredDependency;
 import com.dnfeitosa.codegraph.gradle.plugin.resolvers.DependenciesResolver;
 import com.dnfeitosa.codegraph.index.java.TypesExtractor;
 import com.dnfeitosa.codegraph.index.java.internal.JavaLangPackageResolver;
 import com.dnfeitosa.codegraph.index.java.internal.PackageResolver;
 import org.gradle.api.Project;
-import org.gradle.api.artifacts.ResolvedDependency;
 import org.gradle.api.file.FileTree;
 import org.gradle.api.logging.Logger;
 import org.gradle.api.logging.Logging;
@@ -48,7 +48,7 @@ public class CodegraphIndexer {
         Artifact artifact = projectConverter.toArtifact(project);
 
         addDependencies(artifact, project);
-        addTypes(artifact, project);
+//        addTypes(artifact, project);
         client.addArtifact(artifact);
     }
 
@@ -77,14 +77,14 @@ public class CodegraphIndexer {
     }
 
     private void addDependencies(Artifact artifact, Project project) {
-        Set<ResolvedDependency> resolvedDependencies = resolveDependencies(project);
-        for (ResolvedDependency resolvedDependency : resolvedDependencies) {
-            Dependency dependency = dependencyConverter.toDependency(resolvedDependency);
+        Set<DeclaredDependency> resolvedDependencies = resolveDependencies(project);
+        for (DeclaredDependency declaredDependency : resolvedDependencies) {
+            Dependency dependency = dependencyConverter.toDependency(declaredDependency);
             artifact.addDependency(dependency);
         }
     }
 
-    private Set<ResolvedDependency> resolveDependencies(Project project) {
-        return dependencyResolver.resolveDependencies(project);
+    private Set<DeclaredDependency> resolveDependencies(Project project) {
+        return dependencyResolver.getDeclaredDependenciesOf(project);
     }
 }

@@ -4,14 +4,15 @@ import com.dnfeitosa.codegraph.client.CodegraphClient;
 import com.dnfeitosa.codegraph.client.resources.Artifact;
 import com.dnfeitosa.codegraph.gradle.plugin.converters.ProjectConverter;
 import com.dnfeitosa.codegraph.gradle.plugin.converters.ResolvedDependencyConverter;
+import com.dnfeitosa.codegraph.gradle.plugin.resolvers.DeclaredDependency;
 import com.dnfeitosa.codegraph.gradle.plugin.resolvers.DependenciesResolver;
 import com.dnfeitosa.codegraph.index.java.TypesExtractor;
 import org.gradle.api.Project;
-import org.gradle.api.artifacts.ResolvedDependency;
-import org.gradle.api.internal.artifacts.DefaultModuleVersionIdentifier;
-import org.gradle.api.internal.artifacts.DefaultResolvedDependency;
+import org.gradle.api.artifacts.Dependency;
+import org.gradle.api.internal.artifacts.dependencies.DefaultExternalModuleDependency;
 import org.gradle.testfixtures.ProjectBuilder;
 import org.junit.Before;
+import org.junit.Test;
 
 import static com.dnfeitosa.codegraph.gradle.plugin.utils.ArrayUtils.asSet;
 import static org.mockito.Mockito.mock;
@@ -38,13 +39,13 @@ public class CodegraphIndexerTest {
         task = new CodegraphIndexer(client, dependenciesResolver, projectConverter, dependencyConverter, new TypesExtractor());
     }
 
-//    @Test
+    @Test
     public void shouldExecuteTheTask() {
         Artifact projectArtifact = new Artifact();
         when(projectConverter.toArtifact(project)).thenReturn(projectArtifact);
-        ResolvedDependency dependency1 = dependency("dependency1", "1.0");
-        ResolvedDependency dependency2 = dependency("dependency2", "0.9");
-        when(dependenciesResolver.resolveDependencies(project)).thenReturn(asSet(dependency1, dependency2));
+        DeclaredDependency dependency1 = dependency("group", "dependency1", "1.0", "compile");
+        DeclaredDependency dependency2 = dependency("group", "dependency2", "0.9", "compile");
+        when(dependenciesResolver.getDeclaredDependenciesOf(project)).thenReturn(asSet(dependency1, dependency2));
 
         task.index(project);
 
@@ -53,8 +54,13 @@ public class CodegraphIndexerTest {
         verify(client).addArtifact(projectArtifact);
     }
 
-    private ResolvedDependency dependency(String name, String version) {
-        return new DefaultResolvedDependency(new DefaultModuleVersionIdentifier("the-group", name, version), "configuration");
+    private DeclaredDependency dependency(String group, String name, String version, String... configurations) {
+        Dependency dependency = new DefaultExternalModuleDependency(group, name, version);
+        DeclaredDependency declaredDependency = new DeclaredDependency(dependency);
+        for (String configuration : configurations) {
+            declaredDependency.addConfiguration(configuration);
+        }
+        return declaredDependency;
     }
 
 }
