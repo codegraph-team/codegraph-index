@@ -17,7 +17,6 @@ public class DependenciesResolver {
 
     private static final Logger logger = Logging.getLogger(DependenciesResolver.class);
 
-
     public Set<DeclaredDependency> getDeclaredDependenciesOf(Project project) {
         Map<Dependency, DeclaredDependency> declaredDependencies = new HashMap<Dependency, DeclaredDependency>();
         ConfigurationContainer configurations = project.getConfigurations();

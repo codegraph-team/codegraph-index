@@ -11,7 +11,7 @@ import static org.apache.commons.lang.StringUtils.isBlank;
 
 public class CodegraphClient {
 
-    private static Log LOGGER = LogFactory.getLog(CodegraphClient.class);
+    private static final Log LOGGER = LogFactory.getLog(CodegraphClient.class);
     private final HttpClient client;
 
     public CodegraphClient(String url) {
@@ -23,6 +23,14 @@ public class CodegraphClient {
     }
 
     public void addArtifact(Artifact artifact) {
-        client.post("/artifacts", artifact, ContentType.JSON);
+        client.post("/api/index", new Index(artifact), ContentType.JSON);
+    }
+
+    public static class Index {
+        private Artifact artifact;
+
+        public Index(Artifact artifact) {
+            this.artifact = artifact;
+        }
     }
 }
