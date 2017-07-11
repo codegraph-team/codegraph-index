@@ -14,8 +14,7 @@ dependencies {
     compile gradleApi()
     compile localGroovy()
 
-    compile project(':codegraph-client-base')
-    compile project(':codegraph-java')
+    compile project(':codegraph-client')
     testCompile libraries.unitTesting
 }
 
@@ -26,6 +25,7 @@ bintray {
 
     pkg {
         repo = 'codegraph'
+        userOrg = 'codegraph'
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/dnfeitosa/codegraph'
         name = project.name

@@ -9,7 +9,7 @@ ext {
 distribution.versions = [
     major                    : '0',
     modifier                 : 'dev',
-    'codegraph-client-base'  : '0.1',
+    'codegraph-client'       : '0.1',
     'codegraph-gradle-plugin': '0.1',
     'codegraph-ant'          : '0.1',
     'codegraph-java'         : '0.1',

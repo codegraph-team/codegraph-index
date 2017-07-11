@@ -1,5 +1,5 @@
 dependencies {
-    compile project(':codegraph-client-base')
+    compile project(':codegraph-client')
 
     compile group: 'com.github.javaparser', name: 'javaparser-core', version: '2.5.1'
 
