@@ -1,5 +1,4 @@
 include 'test-codebases'
 include 'codegraph-client'
-include 'codegraph-gradle-plugin'
 include 'codegraph-ant'
 include 'codegraph-java'
