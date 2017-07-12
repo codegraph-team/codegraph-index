@@ -14,5 +14,8 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper
 
-script: ./gradlew clean build --info
+script:
+  - ./gradlew clean build --info
 
+script:
+  - if [[ $TRAVIS_BRANCH == 'master' ]]; then ./gradlew bintrayUpload --info; fi

@@ -1,6 +1,0 @@
-[submodule "test-codebases/src/test/resources/test-codebases/vraptor4"]
-	path = test-codebases/src/test/resources/test-codebases/vraptor4
-	url = https://github.com/caelum/vraptor4.git
-[submodule "test-codebases/src/test/resources/test-codebases/mirror"]
-	path = test-codebases/src/test/resources/test-codebases/mirror
-	url = https://github.com/vidageek/mirror.git
