@@ -5,10 +5,6 @@ apply plugin: 'com.jfrog.bintray'
 targetCompatibility = 1.6
 sourceCompatibility = 1.6
 
-repositories {
-    mavenLocal()
-}
-
 dependencies {
     compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.2.2'
