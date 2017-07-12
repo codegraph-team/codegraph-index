@@ -1,5 +1,3 @@
-apply plugin: 'idea'
-
 buildscript {
     repositories {
         mavenLocal()
@@ -8,7 +6,7 @@ buildscript {
     }
 
     dependencies {
-        classpath group: 'com.jfrog.bintray.gradle', name: 'gradle-bintray-plugin', version: '1.7'
+        classpath group: 'com.jfrog.bintray.gradle', name: 'gradle-bintray-plugin', version: '1.7.1'
     }
 }
 
@@ -23,7 +21,7 @@ subprojects {
     apply plugin: 'java'
 
     group = 'com.dnfeitosa.codegraph'
-    version = "${distribution.versions.major}.${distribution.versions.get(project.name)}-${distribution.versions.modifier}"
+    version = "${distribution.versions.get(project.name)}.${project.releaseType}"
 
     targetCompatibility = 1.8
     sourceCompatibility = 1.8
@@ -35,12 +33,6 @@ subprojects {
 
         testCompile project(':test-codebases')
         testCompile files('../test-codebases/src/test/resources')
-    }
-}
-
-idea {
-    project {
-        languageLevel = '1.8'
     }
 }
 

@@ -7,33 +7,7 @@ ext {
 }
 
 distribution.versions = [
-    major                    : '0',
-    modifier                 : 'dev',
-    'codegraph-client'       : '0.1',
-    'codegraph-ant'          : '0.1',
-    'codegraph-java'         : '0.1',
+    'codegraph-client'       : '0.0.1',
+    'codegraph-ant'          : '0.0.1',
+    'codegraph-java'         : '0.0.1',
 ]
-
-distributions {
-    main {
-        contents {
-            from { 'distribution-template' }
-            from { groupFiles }
-        }
-    }
-}
-
-
-task groupFiles(type: Copy) {
-    from("$projectDir/build/libs") {
-        include '*.jar'
-    }
-    into("$buildDir/temp-dist")
-}
-
-task distribute(type: Copy) {
-    from distTar
-    from distZip
-
-    into "$rootDir/distribution"
-}

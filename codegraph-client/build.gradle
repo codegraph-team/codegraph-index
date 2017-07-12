@@ -1,4 +1,6 @@
 apply plugin: 'maven'
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
 
 targetCompatibility = 1.6
 sourceCompatibility = 1.6
@@ -10,4 +12,36 @@ repositories {
 dependencies {
     compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.2.2'
+}
+
+bintray {
+    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+
+    publications = ['ClientArtifact']
+    publish = "SNAPSHOT".equals(project.releaseType)
+    override = "SNAPSHOT".equals(project.releaseType)
+
+    pkg {
+        userOrg = 'codegraph'
+        repo = project.publishRepository
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/dnfeitosa/codegraph-index'
+        name = project.name
+
+        version {
+            name = project.version
+        }
+    }
+}
+
+publishing {
+    publications {
+        ClientArtifact(MavenPublication) {
+            from components.java
+            groupId project.group
+            artifactId project.name
+            version project.version
+        }
+    }
 }
