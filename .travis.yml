@@ -17,5 +17,9 @@ cache:
 script:
   - ./gradlew clean build --info
 
-script:
-  - if [[ $TRAVIS_BRANCH == 'master' ]]; then ./gradlew bintrayUpload --info; fi
+deploy:
+  - provider: script
+    script:
+      - ./gradlew bintrayUpload --info
+    on:
+      branch: master
