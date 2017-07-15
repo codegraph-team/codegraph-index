@@ -21,7 +21,7 @@ subprojects {
     apply plugin: 'java'
 
     group = 'com.dnfeitosa.codegraph'
-    version = "${distribution.versions.get(project.name)}.${project.releaseType}"
+    version = "${distribution.versions.get(project.name)}-${project.releaseType}"
 
     targetCompatibility = 1.8
     sourceCompatibility = 1.8
