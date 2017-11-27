@@ -20,6 +20,6 @@ script:
 deploy:
   - provider: script
     script:
-      - ./gradlew bintrayUpload --info -PreleaseType=DEV -PpublishRepository=snapshots
+      - ./gradlew bintrayUpload --info -PreleaseType=SNAPSHOT -PpublishRepository=snapshots
     on:
       branch: master
