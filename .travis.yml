@@ -23,3 +23,10 @@ deploy:
       - ./gradlew bintrayUpload --info -PreleaseType=SNAPSHOT -PpublishRepository=snapshots
     on:
       branch: master
+  - provider: script
+    skip_cleanup: true
+    script:
+      - ./gradlew bintrayUpload --info -PreleaseType=RELEASE -PpublishRepository=releases
+    on:
+      branch: master
+      tags: true
