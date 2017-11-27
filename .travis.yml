@@ -6,6 +6,11 @@ jdk:
 os:
   - linux
 
+env:
+  global:
+    - RELEASE_TYPE=`echo $TRAVIS_TAG | sed -n 's/^.*-\(\w*\)/\1/p' | tr '[:lower:]' '[:upper:]'`
+    - REPOSITORY=`if [[ $RELEASE_TYPE = "RELEASE" ]]; then echo "releases"; elif [[ $RELEASE_TYPE = @(RC[0-9]|M[0-9]) ]]; then echo "milestones"; fi`
+
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 
@@ -19,14 +24,18 @@ script:
 
 deploy:
   - provider: script
+    skip_cleanup: true
     script:
-      - ./gradlew bintrayUpload --info -PreleaseType=SNAPSHOT -PpublishRepository=snapshots
+      - ./gradlew bintrayUpload --info -PreleaseType=BUILD_SNAPSHOT -PdependenciesReleaseType=BUILD_SNAPSHOT -PpublishRepository=snapshots
     on:
       branch: master
+      tags: false
+
   - provider: script
     skip_cleanup: true
     script:
-      - ./gradlew bintrayUpload --info -PreleaseType=RELEASE -PpublishRepository=releases
+      - ./gradlew bintrayUpload --info -PreleaseType=$RELEASE_TYPE -PdependenciesReleaseType=$RELEASE_TYPE -PpublishRepository=$REPOSITORY
     on:
       branch: master
       tags: true
+      condition: $RELEASE_TYPE = @(RC[0-9]|M[0-9]|RELEASE)
