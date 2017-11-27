@@ -60,4 +60,8 @@ public class Artifact {
     public void setType(String type) {
         this.type = type;
     }
+
+    public List<Dependency> getDependencies() {
+        return dependencies;
+    }
 }

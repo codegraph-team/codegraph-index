@@ -16,6 +16,7 @@ import org.apache.tools.ant.BuildException;
 
 import java.io.File;
 import java.text.ParseException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -52,7 +53,7 @@ public class CodegraphTask extends IvyTask {
             projectArtifact.addDependency(converter.toDependency(dependency));
         }
 
-        client.addArtifact(projectArtifact);
+        client.addArtifact(projectArtifact, Collections.<Artifact>emptySet());
     }
 
     private Set<ModuleRevisionId> getDependencies(String resolveId, ResolutionCacheManager cache, String[] confs) {
