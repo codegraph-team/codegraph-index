@@ -1,10 +1,10 @@
-package com.dnfeitosa.codegraph.server.api.controllers;
+package co.degraph.server.api.controllers;
 
-import com.dnfeitosa.codegraph.core.models.Artifact;
-import com.dnfeitosa.codegraph.server.api.converters.ArtifactResourceConverter;
-import com.dnfeitosa.codegraph.server.api.resources.ArtifactResource;
-import com.dnfeitosa.codegraph.server.api.services.ArtifactService;
-import com.dnfeitosa.codegraph.server.api.services.ItemDoesNotExistException;
+import co.degraph.core.models.Artifact;
+import co.degraph.server.api.converters.ArtifactResourceConverter;
+import co.degraph.server.api.resources.ArtifactResource;
+import co.degraph.server.api.services.ArtifactService;
+import co.degraph.server.api.services.ItemDoesNotExistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

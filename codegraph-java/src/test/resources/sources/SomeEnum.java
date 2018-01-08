@@ -1,4 +1,4 @@
-package com.dnfeitosa.codegraph;
+package co.degraph;
 
 public enum SomeEnum {
     VALUE1,

@@ -20,7 +20,7 @@
 
     <target name="codegraph" depends="init.codegraph">
 
-        <taskdef resource="com/dnfeitosa/codegraph/ant/taskdefs/codegraphTasks.properties">
+        <taskdef resource="co/degraph/ant/taskdefs/codegraphTasks.properties">
             <classpath>
                 <fileset dir="${codegraph.jars.location}" includes="*.jar" />
                 <fileset dir="${ivy.jars.location}" includes="ivy*.jar"/>

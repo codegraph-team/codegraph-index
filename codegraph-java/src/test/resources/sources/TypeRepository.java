@@ -1,4 +1,4 @@
-package com.dnfeitosa.codegraph.db.repositories;
+package co.degraph.db.repositories;
 
 import org.springframework.data.neo4j.repository.GraphRepository;
 
