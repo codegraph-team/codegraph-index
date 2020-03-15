@@ -1,0 +1,51 @@
+version: 2.1
+
+executors:
+  jdk8:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    working_directory: /home/circleci/workspace
+
+jobs:
+  build:
+    executor: jdk8
+    environment:
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.gradle" }}
+            - v1-dependencies-
+      - run: ./gradlew dependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-dependencies-{{ checksum "build.gradle" }}
+
+      - run: ./gradlew clean build --info
+      - run: ls
+      - persist_to_workspace:
+          root: /home/circleci
+          paths:
+            - workspace
+
+  publish-snapshot:
+    executor: jdk8
+    steps:
+      - attach_workspace:
+          at: /home/circleci
+      - run: ls
+      - run: ./gradlew bintrayUpload --info -PreleaseType=BUILD_SNAPSHOT -PdependenciesReleaseType=BUILD_SNAPSHOT -PpublishRepository=snapshots
+
+workflows:
+  version: 2
+  build-and-publish:
+    jobs:
+      - build
+      - publish-snapshot:
+          requires:
+            - build
+
